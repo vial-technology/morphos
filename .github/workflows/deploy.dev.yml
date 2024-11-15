@@ -39,19 +39,11 @@ jobs:
           DOCKER_BUILD_RECORD_UPLOAD: false
         with:
           push: true
-          no-cache: true
+          no-cache: false
           provenance: false
-          tags: us.gcr.io/${{ secrets.GCP_PROJECT_DEV }}/vial-dcs-backend/morphos:commit-${{ steps.package-version.outputs.current-version }}
-#      - name: Deploy
-#        shell: bash
-#        env:
-#          version: ${{ steps.package-version.outputs.current-version }}
-#        run: |-
-#          gcloud run services update morphos \
-#          --project=${{ secrets.GCP_PROJECT_DEV }} \
-#          --platform=managed \
-#          --image="${{steps.docker_build.outputs.metadata && fromJSON(steps.docker_build.outputs.metadata)['image.name'] || steps.package-version.outputs.current-version-register}}" \
-#          --labels=commit-sha=$GITHUB_SHA \
-#          --region=${{ secrets.REGION }} \
-#          --revision-suffix=$(date +%Y%m%dT%H%M%S | tr '[:upper:]' '[:lower:]')-v${version//./-} \
-#          --quiet
+          tags: us.gcr.io/${{secrets.GCP_PROJECT_DEV}}/vial-dcs-backend/morphos:commit-${{ steps.package-version.outputs.current-version }}
+      - id: 'deploy'
+        uses: 'google-github-actions/deploy-cloudrun@v2'
+        with:
+          service: "morphos"
+          image: "${{fromJSON(steps.docker_build.outputs.metadata)['image.name']}}"
