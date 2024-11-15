@@ -41,7 +41,7 @@ jobs:
           push: true
           no-cache: true
           provenance: false
-          tags: us.gcr.io/${{ secrets.GCP_PROJECT_DEV }}/morphos/:commit-${{ steps.package-version.outputs.current-version }}
+          tags: us.gcr.io/${{ secrets.GCP_PROJECT_DEV }}/vial-dcs-backend/morphos:commit-${{ steps.package-version.outputs.current-version }}
 #      - name: Deploy
 #        shell: bash
 #        env:
