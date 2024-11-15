@@ -33,7 +33,7 @@ RUN apt-get update \
 COPY --from=builder /app/morphos /bin/morphos
 COPY --from=builder /usr/share/fonts /usr/share/fonts
 
-ENV FONTCONFIG_PATH /usr/share/fonts
+ENV FONTCONFIG_PATH=/usr/share/fonts
 
 # Use morphos as user
 RUN useradd -m morphos
